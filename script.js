@@ -43,10 +43,6 @@ window.onload=function() {
 
 };
 
-function saveDataOnCookie(jsonData){
-
-}
-
 function addJsonData(newObjectData,jsonDataFile){
     let dataLength = jsonDataFile.length;
     let obj = {};
@@ -55,6 +51,7 @@ function addJsonData(newObjectData,jsonDataFile){
         obj[objectJsonInfo[i+1]]= newObjectData[i];
     }
     jsonDataFile[dataLength] = obj;
+    localStorage.setItem('data',JSON.stringify(jsonDataFile));
     return jsonDataFile;
 }
 
@@ -187,29 +184,3 @@ function addGBtn(parentTd,parentTBody,parentItem,c){
     parentItem.appendChild(parentTd).appendChild(gBtn);
 }
 
-function bake_cookie(name, value) {
-    var cookie = [name, '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
-    document.cookie = cookie;
-}
-
-function read_cookie(name) {
-    var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-    result && (result = JSON.parse(result[1]));
-    return result;
-}
-
-function delete_cookie(name) {
-    document.cookie = [name, '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.', window.location.host.toString()].join('');
-}
-function userConstructor(name, street, city) {
-    // ... your code
-    this.dumpData = function () {
-        return {
-            'userConstructorUser': {
-                name: this.name,
-                street: this.street,
-                city: this.city
-            }
-        }
-    }
-}
