@@ -4,10 +4,16 @@ let jsonDataObject;
 let tableContent ;
 let currentItemUsed;
 let objectJsonInfo = ['id','firstName','lastName','address','imageLink'];
+
 window.onload=function() {
     tableContent = document.getElementById("tableItems");
-    jsonDataObject = data;
-    loadTable(data,tableContent);
+    if (localStorage.getItem('data')){
+        jsonDataObject = JSON.parse(localStorage.getItem('data'));
+    } else {
+        jsonDataObject = data;
+    }
+
+    loadTable(jsonDataObject,tableContent);
     jsonDataObject = tableToJson(tableContent,jsonDataObject);
 
     document.getElementById("addButton").addEventListener("click", function(event) {
@@ -27,6 +33,12 @@ window.onload=function() {
        editItemVal(newInput,trElement);
        jsonDataObject = tableToJson(tableContent,jsonDataObject);
        loadTable(jsonDataObject,tableContent);
+    });
+
+    document.getElementById("loadDataButton").addEventListener("click", function(event) {
+        jsonDataObject = data;
+        localStorage.setItem('data',JSON.stringify(jsonDataObject));
+        loadTable(jsonDataObject,tableContent);
     });
 
 };
@@ -100,13 +112,12 @@ function tableToJson(tableElement,jsonDataFile){
     for (let m = 0; m < tableElement.childElementCount;m++) {
         let object = {};
         for (let n = 0; n < tableElement.children[m].childElementCount - 1; n++) {
-            console.log(object);
-            console.log(tableElement.children[m].children[n].getAttribute('role'));
-            console.log(tableElement.children[m].children[n].getAttribute('value'));
             object[tableElement.children[m].children[n].getAttribute('role')] = tableElement.children[m].children[n].getAttribute('value');
     }
         jsonDataFile[m] = object;
     }
+
+    localStorage.setItem('data',JSON.stringify(jsonDataFile));
     return jsonDataFile;
 }
 
@@ -174,4 +185,31 @@ function addGBtn(parentTd,parentTBody,parentItem,c){
     });
 
     parentItem.appendChild(parentTd).appendChild(gBtn);
+}
+
+function bake_cookie(name, value) {
+    var cookie = [name, '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
+    document.cookie = cookie;
+}
+
+function read_cookie(name) {
+    var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
+    result && (result = JSON.parse(result[1]));
+    return result;
+}
+
+function delete_cookie(name) {
+    document.cookie = [name, '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain=.', window.location.host.toString()].join('');
+}
+function userConstructor(name, street, city) {
+    // ... your code
+    this.dumpData = function () {
+        return {
+            'userConstructorUser': {
+                name: this.name,
+                street: this.street,
+                city: this.city
+            }
+        }
+    }
 }

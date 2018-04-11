@@ -90,10 +90,14 @@ footer{
 
 button{
     text-transform: uppercase;
-    font-weight: bolder;
 }
-#addButton{
-    position: absolute;
 
-    right: 10%;
+#addButton{
+
+}
+#tBlock_02 {
+}
+.btn:focus,.btn:active:focus,.btn.active:focus,
+.btn.focus,.btn:active.focus,.btn.active.focus {
+    outline: none;
 }
